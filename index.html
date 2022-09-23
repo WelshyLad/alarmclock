@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Clock</title>
+
+    <style>
+      body {
+        background: black;
+      }
+
+      .clock {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        color: #4831d4;
+        font-size: 50px;
+        font-family: 'Source Sans Pro', sans-serif;
+        letter-spacing: 7px;
+      }
+
+      .date {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-45%) translateY(-120%);
+        color: #CCF381;
+        font-size: 75px;
+        font-family: 'Source Sans Pro', sans-serif;
+        letter-spacing: 7px;
+      }
+
+      #sessionSpan {
+        color: #4831d4;
+        font-size: 25px;
+        position: absolute;
+        top: 50%;
+        transform: translateX(20%) translateY(-50%);
+        letter-spacing: 0 !important;
+      }
+
+      .day{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(60%);
+        color: #4831d4;
+        font-size: 30px;
+        font-family: 'Source Sans Pro', sans-serif;
+        letter-spacing: 1px;
+
+        font-style: italic;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="dateDisplay" class="date" onload="showDate()"></div>
+    <div id="clockDisplay" class="clock" onload="showTime()"></div>
+    <div id="myDayDisplay" class="day" onload="showDay()"></div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      function showTime() {
+        var date = new Date();
+        var h = date.getHours(); // 0 - 23
+        var m = date.getMinutes(); // 0 - 59
+        var s = date.getSeconds(); // 0 - 59
+        var session = "AM";
+
+        // Checks if it is AM or PM
+
+        if (h > 13) {
+          session = "PM";
+        }
+
+        // Adds Zero to the front of the string if, it is less then 10
+        if (s < 10) {
+          s = "0" + `${s}`;
+        } else if (m < 10) {
+          m = "0" + `${m}`;
+        } else if (h < 10) {
+          h = "0" + `${h}`;
+        }else if (m.toString().length == 1){
+          m = "0" + `${m}`;
+        }
+
+        const finalTime =
+          `${h}` +
+          ":" +
+          `${m}` +
+          ":" +
+          `${s}` +
+          " " +
+          "<span id= 'sessionSpan'>" +
+          session +
+          "</span>";
+
+        
+        document.getElementById("clockDisplay").innerHTML = finalTime;
+        //console.log(finalTime); // Outputs 56
+
+        setTimeout(showTime, 1000);
+      }
+
+      function showDate(){
+
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear().toString().substr(-2)
+
+
+        if(month.toString().length === 1){
+          month = "0" + `${month}`;
+        }else if(day.toString().length === 1){
+          day = "0" + `${day}`;          
+        }
+
+        var finalDate = `${day}` + "/" + `${month}` + "/" + `${year}`;
+
+        document.getElementById("dateDisplay").innerHTML = finalDate;
+
+        setTimeout(showDate, 1000);
+
+      }
+
+      function showDay(){
+        const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+        var date = new Date();
+        let day = weekday[date.getDay()];
+
+        document.getElementById("myDayDisplay").innerHTML = day;
+      }
+
+      showTime();
+      showDate();
+      showDay();
+    </script>
+  </body>
+</html>
