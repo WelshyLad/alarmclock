@@ -20,6 +20,8 @@
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="style.css" />
+
     <title>Clock</title>
 
     <style>
@@ -34,7 +36,7 @@
         transform: translateX(-50%) translateY(-50%);
         color: #4831d4;
         font-size: 50px;
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: "Source Sans Pro", sans-serif;
         letter-spacing: 7px;
       }
 
@@ -43,9 +45,9 @@
         top: 50%;
         left: 50%;
         transform: translateX(-45%) translateY(-120%);
-        color: #CCF381;
+        color: #ccf381;
         font-size: 75px;
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: "Source Sans Pro", sans-serif;
         letter-spacing: 7px;
       }
 
@@ -58,26 +60,42 @@
         letter-spacing: 0 !important;
       }
 
-      .day{
+      .day {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translateX(-50%) translateY(60%);
         color: #4831d4;
         font-size: 30px;
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: "Source Sans Pro", sans-serif;
         letter-spacing: 1px;
 
         font-style: italic;
       }
-
-
     </style>
   </head>
+
   <body>
+    <div id="nav-placeholder"></div>
+
     <div id="dateDisplay" class="date" onload="showDate()"></div>
     <div id="clockDisplay" class="clock" onload="showTime()"></div>
     <div id="myDayDisplay" class="day" onload="showDay()"></div>
+
+    <script>
+      $(function () {
+        $("#nav-placeholder").load("nav.html");
+      });
+      /* Open when someone clicks on the span element */
+      function openNav() {
+        document.getElementById("myNav").style.width = "100%";
+      }
+
+      /* Close when someone clicks on the "x" symbol inside the overlay */
+      function closeNav() {
+        document.getElementById("myNav").style.width = "0%";
+      }
+    </script>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script
@@ -96,6 +114,14 @@
 
         // Checks if it is AM or PM
 
+        if (m.toString().length === 1) {
+          m = "0" + `${m}`;
+        }
+
+        /*         if (h.toString().length === 1){
+          h = "0" + `${h}`;
+        } */
+
         if (h > 13) {
           session = "PM";
         }
@@ -103,12 +129,10 @@
         // Adds Zero to the front of the string if, it is less then 10
         if (s < 10) {
           s = "0" + `${s}`;
-        } else if (m < 10) {
-          m = "0" + `${m}`;
-        } else if (h < 10) {
+        } 
+        
+        if (h < 10 || h.toString().length() === 1) {
           h = "0" + `${h}`;
-        }else if (m.toString().length == 1){
-          m = "0" + `${m}`;
         }
 
         const finalTime =
@@ -122,25 +146,22 @@
           session +
           "</span>";
 
-        
         document.getElementById("clockDisplay").innerHTML = finalTime;
         //console.log(finalTime); // Outputs 56
 
         setTimeout(showTime, 1000);
       }
 
-      function showDate(){
-
+      function showDate() {
         var date = new Date();
         var day = date.getDate();
         var month = date.getMonth() + 1;
-        var year = date.getFullYear().toString().substr(-2)
+        var year = date.getFullYear().toString().substr(-2);
 
-
-        if(month.toString().length === 1){
+        if (month.toString().length === 1) {
           month = "0" + `${month}`;
-        }else if(day.toString().length === 1){
-          day = "0" + `${day}`;          
+        } else if (day.toString().length === 1) {
+          day = "0" + `${day}`;
         }
 
         var finalDate = `${day}` + "/" + `${month}` + "/" + `${year}`;
@@ -148,16 +169,24 @@
         document.getElementById("dateDisplay").innerHTML = finalDate;
 
         setTimeout(showDate, 1000);
-
       }
 
-      function showDay(){
-        const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      function showDay() {
+        const weekday = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
 
         var date = new Date();
         let day = weekday[date.getDay()];
 
         document.getElementById("myDayDisplay").innerHTML = day;
+        setTimeout(showDay, 1000);
       }
 
       showTime();
